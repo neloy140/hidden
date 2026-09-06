@@ -1,10 +1,9 @@
-name: Deploy Hidden Website to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -13,12 +12,11 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
   deploy:
-    name: Deploy Website
     runs-on: ubuntu-latest
 
     environment:
@@ -26,21 +24,17 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      # Get your files from the repository
-      - name: Checkout Repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # Configure GitHub Pages
-      - name: Setup GitHub Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      # Upload website files
-      - name: Upload Website
+      - name: Upload site
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
-      # Deploy website
-      - name: Deploy to GitHub Pages
+      - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
